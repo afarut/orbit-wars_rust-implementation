@@ -1,0 +1,14 @@
+[build-system]
+requires = ["maturin>=1,<2"]
+build-backend = "maturin"
+
+[project]
+name = "ow_rs"
+version = "0.1.0"
+requires-python = ">=3.8"
+description = "Rust port of the Orbit Wars env for fast RL training"
+
+# Build the training env fast by default (native math, ~3x faster, faithful but
+# not ULP-identical to Kaggle). Drop "fast_math" here for a bit-exact Env.
+[tool.maturin]
+features = ["python", "fast_math"]

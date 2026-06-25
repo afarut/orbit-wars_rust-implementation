@@ -1,0 +1,31 @@
+[package]
+name = "ow_rs"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "ow_rs"
+# rlib for cargo tests/benches; cdylib for the PyO3 extension module.
+crate-type = ["rlib", "cdylib"]
+
+[features]
+# Enable the PyO3 bindings (built via maturin). Off for plain `cargo test`.
+python = ["pyo3", "numpy"]
+# Use native (non-libm-exact) math: ~3x faster, faithful but NOT bit-identical
+# to Kaggle (positions differ by ~1 ULP; discrete outcomes unchanged). For RL
+# training. Off by default so `cargo test` stays bit-exact.
+fast_math = []
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"], optional = true }
+numpy = { version = "0.22", optional = true }
+rayon = "1"
+serde = { version = "1", features = ["derive"] }
+# arbitrary_precision: keep number literals as strings so as_f64() parses via
+# std (correctly rounded) — matches Python's float(), required for bit-exact
+# parity. Default serde_json float parsing is off by 1 ULP on some literals.
+serde_json = { version = "1", features = ["arbitrary_precision"] }
+# SHA-512 for the string-seed path of CPython's random.seed (comet RNG).
+sha2 = "0.10"
+
+[dev-dependencies]
