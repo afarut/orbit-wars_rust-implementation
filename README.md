@@ -1,4 +1,4 @@
-# ow_rs
+# Orbit Wars Rust
 
 Rust crate for the Orbit Wars environment. See the [top-level README](../README.md)
 for the Python API, build/wheel instructions, performance, and correctness.
